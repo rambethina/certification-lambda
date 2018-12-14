@@ -1,6 +1,7 @@
 var Alexa = require('alexa-sdk');
 
-exports.handler = async (event) => {
+exports.handler = async (event, context, callback) => {
+    console.log('Executing Lambda ....')
     var alexa = Alexa.handler(event, context);
     alexa.registerHandlers(handlers);
     alexa.execute();
