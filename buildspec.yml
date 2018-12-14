@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - npm install
+  post_build:
+      commands:
+        - mkdir build-output
+        - cp -R index.js build-output
+artifacts:
+  files:
+    - build-output/**/*
+  discard-paths: yes
