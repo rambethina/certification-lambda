@@ -8,6 +8,9 @@ phases:
       commands:
         - mkdir build-output
         - cp -R index.js node_modules/ build-output
+        - cd build-output/
+        - zip -qr build-output.zip ./*
+        - mv build-output.zip ../
 artifacts:
   files:
-    - build-output/**/*
+    - build-output.zip
