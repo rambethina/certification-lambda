@@ -13,7 +13,3 @@ phases:
         - cd build-output/
         - zip -r lambda.zip .
         - mv lambda.zip ../
-artifacts:
-  files:
-      - lambda.zip
-  discard-paths: yes
