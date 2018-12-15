@@ -7,9 +7,7 @@ phases:
   post_build:
       commands:
         - mkdir build-output
-        - cp -R index.js build-output
+        - cp -R index.js node_modules/ build-output
 artifacts:
   files:
     - build-output/**/*
-    - node_modules/*
-  discard-paths: yes
