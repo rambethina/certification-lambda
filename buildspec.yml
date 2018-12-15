@@ -7,11 +7,12 @@ phases:
   post_build:
       commands:
         - mkdir build-output
-        - cp -R index.js node_modules/ build-output
+        - mkdir -p build-output/node_modules
+        - cp -R *.js build-output
+        - cp -R node_modules/* build-output/node_modules
         - cd build-output/
-        - zip -qr build-output.zip ./*
-        - mv build-output.zip ../
+        - zip -r lambda.zip .
+        - mv lambda.zip ../
 artifacts:
   files:
-    - build-output.zip
-  discard-paths: yes
+      - lambda.zip
