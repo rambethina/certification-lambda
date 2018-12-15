@@ -10,6 +10,8 @@ phases:
         - mkdir -p build-output/node_modules
         - cp -R *.js build-output
         - cp -R node_modules/* build-output/node_modules
-        - cd build-output/
-        - zip -r lambda.zip .
-        - mv lambda.zip ../
+artifacts:
+  type: zip
+  files:
+    - 'build-output/index.js'
+    - 'build-output/node_modules/*'
