@@ -7,3 +7,4 @@ artifacts:
   files:
     - template.yaml
     - cfn-transformed-output-template.yaml
+  discard-paths: yes
