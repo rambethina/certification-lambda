@@ -208,30 +208,6 @@ exports.handler = skillBuilder
     .addErrorHandlers(ErrorHandler)
     .lambda();
 
-// exports.handler = async (event, context, callback) => {
-//     console.log('Executing Lambda ....');
-//     // var params = {
-//     //     TableName: 'certification-questions',
-//     //     Key: {'QuestionId': "1"}
-//     // };
-//     // const results = await docClient.get(params).promise();
-//     // console.log('Results .....');
-//     // console.log(JSON.stringify(results));
-//     // .then(data => {
-//     //     console.log(JSON.stringify(data))
-//     // })
-//     // .catch(err => {
-//     //     console.error(err);
-//     // })
-
-
-//     var alexa = Alexa.handler(event, context);
-//     alexa.appId = 'amzn1.ask.skill.a9e98778-b427-4b9c-bbfe-6829132b3a36';
-//     // alexa.dynamoDBTableName = 'certification-questions';
-//     alexa.registerHandlers(handlers);
-//     alexa.execute();
-// };
-
 var handlers = {
     'LaunchRequest': function () {
         this.emit(':ask', 'Welcome to AWS Developer Certification!', 'Try saying hello!');
