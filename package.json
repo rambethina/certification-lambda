@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/rambethina/code-build-lambda-template#readme",
   "dependencies": {
-    "alexa-sdk": "^1.0.25"
+    "alexa-sdk": "^1.0.25",
+    "ask-sdk": "^2.3.0",
+    "aws-sdk": "^2.377.0",
+    "lodash": "^4.17.11"
   }
 }

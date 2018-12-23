@@ -1,0 +1,14 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: 'AWS Certification Quiz Lambda'
+Resources:
+  AWSCertification:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: AWSCertification
+      CodeUri: .
+      Handler: index.handler
+      Runtime: 'nodejs8.10'
+      AutoPublishAlias: live
+      DeploymentPreference:
+        Type: Linear10PercentEvery1Minute

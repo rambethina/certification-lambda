@@ -1,17 +1,10 @@
 version: 0.2
-
 phases:
-  build:
+  install:
     commands:
-      - npm install
-  post_build:
-      commands:
-        - mkdir build-output
-        - mkdir -p build-output/node_modules
-        - cp -R *.js build-output
-        - cp -R node_modules/* build-output/node_modules
+      - aws cloudformation package --template-file template.yaml --s3-bucket code-builds-artifacts --output-template-file cfn-transformed-output-template.yaml
 artifacts:
   type: zip
   files:
-    - 'build-output/index.js'
-    - 'build-output/node_modules/*'
+    - template.yaml
+    - cfn-transformed-output-template.yaml
