@@ -105,7 +105,7 @@ const ReplayQuestion = {
         const request = handlerInput.requestEnvelope.request;
         // launch requests as well as any new session, as games are not saved in progress, which makes
         // no one shots a reasonable idea except for help, and the welcome message provides some help.
-        return request.type === 'IntentRequest' && request.intent.name === 'NextQuestion';
+        return request.type === 'IntentRequest' && request.intent.name === 'ReplayQuestion';
       },
     async handle(handlerInput) {
         const responseBuilder = handlerInput.responseBuilder;
