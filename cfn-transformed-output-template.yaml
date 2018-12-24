@@ -4,10 +4,10 @@ Resources:
   AWSCertification:
     Properties:
       AutoPublishAlias: live
-      CodeUri: s3://code-builds-artifacts/fb623104a1ec8379f9cba592753d2f05
+      CodeUri: s3://sam-test-01/b7c2c7b926e374f46fcaef40d142731e
       DeploymentPreference:
         Type: Linear10PercentEvery1Minute
-      FunctionName: AWSCertification
+      FunctionName: aws-certification-quiz-03
       Handler: index.handler
       Runtime: nodejs8.10
     Type: AWS::Serverless::Function
