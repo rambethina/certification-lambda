@@ -192,7 +192,7 @@ const getQuestionSpeech = item => {
     if(item.ChoiceE) {
         questionText = questionText.concat(`<break time="500ms"/> E <break time="500ms"/> ${item.ChoiceE}`)
     }    
-    questionText.concat(`<break time="500ms"/> If you would like me to replay question, say replay question <break time="500ms"/> ${item.ChoiceE}`)          
+    questionText.concat(`<break time="500ms"/> If you would like me to replay question, say replay question <break time="500ms"/>`)          
     return `${item.Question} <break time="500ms"/> ${questionText}`
 }
 
