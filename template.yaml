@@ -6,6 +6,7 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       FunctionName: aws-certification-quiz
+      Role: arn:aws:iam::726095363876:role/lambda_access_dynamo_db
       CodeUri: .
       Handler: index.handler
       Runtime: 'nodejs8.10'
