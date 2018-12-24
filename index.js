@@ -100,6 +100,34 @@ const NextQuestion = {
     }
 }
 
+const ReplayQuestion = {
+    canHandle(handlerInput) {
+        const request = handlerInput.requestEnvelope.request;
+        // launch requests as well as any new session, as games are not saved in progress, which makes
+        // no one shots a reasonable idea except for help, and the welcome message provides some help.
+        return request.type === 'IntentRequest' && request.intent.name === 'NextQuestion';
+      },
+    async handle(handlerInput) {
+        const responseBuilder = handlerInput.responseBuilder;
+        const attributesManager = handlerInput.attributesManager;
+        const sessionAttributes = attributesManager.getSessionAttributes()
+        const currentQuestionNumber = parseInt(sessionAttributes.currentQuestionNumber)
+        var params = {
+            TableName: 'certification-questions',
+            Key: {'QuestionId': `${currentQuestionNumber}`}
+       };
+       sessionAttributes.currentQuestionNumber = `${currentQuestionNumber}`
+       attributesManager.setSessionAttributes(sessionAttributes);
+       const results = await docClient.get(params).promise();
+       
+    const speechOutput = getQuestionSpeech(results.Item)
+       return responseBuilder
+         .speak(speechOutput)
+         .reprompt('say next')
+         .getResponse();
+    }
+}
+
 const AnswerIntent = {
     canHandle(handlerInput) {
         const request = handlerInput.requestEnvelope.request;
@@ -138,7 +166,7 @@ const AnswerIntent = {
        console.log(`User choice array is ${answerList.sort()}`);
        console.log(`Final ${arrayAnswer}`);
     //    const reply = correctAnswer.toLowerCase() === userChoice.toLowerCase() ? 'Your Answer is correct' : 'Your answer is wrong';
-        const reply = arrayAnswer ? 'Your Answer is correct' : 'Your answer is wrong';
+        const reply = arrayAnswer ? 'Your Answer is correct, you can say next question or replay question' : 'Your answer is wrong';
 
        return responseBuilder
          .speak(reply)
@@ -203,69 +231,8 @@ exports.handler = skillBuilder
         FirstQuestion,
         AnswerIntent,
         NextQuestion,
+        ReplayQuestion,
         ExitHandler
     )
     .addErrorHandlers(ErrorHandler)
     .lambda();
-
-var handlers = {
-    'LaunchRequest': function () {
-        this.emit(':ask', 'Welcome to AWS Developer Certification!', 'Try saying hello!');
-    },
-    'NewSession': function () {
-        this.emit(':ask', 'Welcome to AWS Developer Certification Skill. If you are ready say begin');
-    },   
-    'FirstQuestion': function () {
-        console.log("srart ...")
-        var params = {
-            TableName: 'certification-questions',
-            Key: {'QuestionId': "1"}
-        };
-        docClient.get(params).promise()
-        .then(data => {
-            console.log(JSON.stringify(data))
-            this.emit(':ask', 'SQS is pull based. A <break time="1s"/> True <break time="1s"/>  B <break time="1s"/> False');
-        })
-        .catch(err => {
-            console.error(err);
-            this.emit(':tell', 'Houston, we have a problem.');
-        })
-        // const question = await nextQuestion("1");
-        // console.log("After db call...")
-        // console.log(question);
-        // this.emit(':ask', 'SQS is pull based. A <break time="1s"/> True <break time="1s"/>  B <break time="1s"/> False');
-    }, 
-    'AnswerIntent': function () {
-        console.log(`Values passed ${JSON.stringify(this.event.request.intent.slots)}`)
-        var letter = this.event.request.intent.slots.choice.value;
-        console.log(`User said ${letter}`)
-        this.emit(':ask', `User said ${letter}`);
-    }, 
-    'AMAZON.StopIntent': function () {
-        // State Automatically Saved with :tell
-        this.emit(':tell', `Goodbye.`);
-      },
-    
-      'AMAZON.CancelIntent': function () {
-        // State Automatically Saved with :tell
-        this.emit(':tell', `Goodbye.`);
-      },
-    
-      'SessionEndedRequest': function () {
-        // Force State Save When User Times Out
-        this.emit(':saveState', true);
-      },
-}
-
-const nextQuestion = async currentQuestionNumber => {
-   
-
-    var params = {
-     TableName: 'certification-questions',
-     Key: {'QuestionId': currentQuestionNumber}
-    };
-    console.log(JSON.stringify(params))
-    const results = await docClient.get(params).promise();
-    console.log(JSON.stringify(results));
-    return results;
-}
