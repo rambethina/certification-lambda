@@ -166,7 +166,7 @@ const AnswerIntent = {
        console.log(`User choice array is ${answerList.sort()}`);
        console.log(`Final ${arrayAnswer}`);
     //    const reply = correctAnswer.toLowerCase() === userChoice.toLowerCase() ? 'Your Answer is correct' : 'Your answer is wrong';
-        const reply = arrayAnswer ? 'Your Answer is correct, you can say next question or replay question' : 'Your answer is wrong';
+        const reply = arrayAnswer ? 'Your Answer is correct, you can say next question or replay question' : 'Your answer is wrong, you can say next question or replay question';
 
        return responseBuilder
          .speak(reply)
@@ -191,8 +191,8 @@ const getQuestionSpeech = item => {
     }
     if(item.ChoiceE) {
         questionText = questionText.concat(`<break time="500ms"/> E <break time="500ms"/> ${item.ChoiceE}`)
-    }              
-    console.log(`Question Text ${questionText}`)  
+    }    
+    questionText.concat(`<break time="500ms"/> If you would like me to replay question, say replay question <break time="500ms"/> ${item.ChoiceE}`)          
     return `${item.Question} <break time="500ms"/> ${questionText}`
 }
 
