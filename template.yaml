@@ -5,7 +5,7 @@ Resources:
   AWSCertification:
     Type: 'AWS::Serverless::Function'
     Properties:
-      FunctionName: aws-certification-quiz-01
+      FunctionName: aws-certification-quiz
       CodeUri: .
       Handler: index.handler
       Runtime: 'nodejs8.10'
