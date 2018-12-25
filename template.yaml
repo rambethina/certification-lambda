@@ -13,3 +13,13 @@ Resources:
       AutoPublishAlias: live
       DeploymentPreference:
         Type: Linear10PercentEvery1Minute
+
+  ServerLessCustomMetricFilter:
+    Type: 'AWS::Logs::MetricFilter'
+    Properties:
+      LogGroupName: /aws/lambda/certification-sample-metrics
+      FilterPattern: 'Correct answer'
+      MetricTransformations:
+        - MetricValue: 1
+          MetricNamespace: CustomMetric
+          MetricName: correct-answer-metric
