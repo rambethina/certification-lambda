@@ -17,7 +17,7 @@ Resources:
   ServerLessCustomMetricFilter:
     Type: 'AWS::Logs::MetricFilter'
     Properties:
-      LogGroupName: /aws/lambda/certification-sample-metrics
+      LogGroupName: /aws/lambda/aws-certification-quiz
       FilterPattern: 'Correct answer'
       MetricTransformations:
         - MetricValue: 1
