@@ -1,7 +1,10 @@
-// var Alexa = require('alexa-sdk');
+var AWSXRay = require('aws-xray-sdk-core');
+// var AWS = AWSXRay.captureAWS(require('aws-sdk'));
 var AWS = require('aws-sdk');
 const Alexa = require('ask-sdk');
 const _ =require('lodash')
+
+AWSXRay.enableManualMode()
 
 var docClient = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 
@@ -46,6 +49,7 @@ const FirstQuestion = {
         return request.type === 'IntentRequest' && request.intent.name === 'FirstQuestion';
       },
     async handle(handlerInput) {
+        const segment = new AWSXRay.Segment('first-question')
         const responseBuilder = handlerInput.responseBuilder;
         const attributesManager = handlerInput.attributesManager;
         const sessionAttributes = attributesManager.getSessionAttributes()
@@ -58,7 +62,8 @@ const FirstQuestion = {
        console.log(JSON.stringify(params))
        const results = await docClient.get(params).promise();
        console.log(JSON.stringify(results));
-       
+       console.log(JSON.stringify(segment))
+       segment.close();
     //    const speechOutput = 'SQS is pull based. A <break time="1s"/> True <break time="1s"/>  B <break time="1s"/> False';
     const speechOutput = getQuestionSpeech(results.Item)
        return responseBuilder
@@ -87,6 +92,9 @@ const NextQuestion = {
        };
        sessionAttributes.currentQuestionNumber = `${nextQuestionNumber}`
        attributesManager.setSessionAttributes(sessionAttributes);
+       AWSXRay.captureFunc('annotations', function(subsegment){
+        subsegment.addAnnotation('Name', nextQuestionNumber);
+      });
        console.log(JSON.stringify(params))
        const results = await docClient.get(params).promise();
        console.log(JSON.stringify(results));
